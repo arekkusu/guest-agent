@@ -156,6 +156,11 @@ func downloadScript(ctx context.Context, path string, file *os.File) error {
 	bucket, object := parseGCS(path)
 	if bucket != "" && object != "" {
 		err = downloadGSURL(ctx, bucket, object, file)
+		if err == nil {
+			logger.Debugf("Succesfull download using GSURL, bucket: %s, object: %s, file: %s",
+				bucket, object, file)
+			return nil
+		}
 		if err != nil {
 			logger.Infof("Failed to download object [%s] from GCS bucket [%s], err: %+v", object, bucket, err)
 		}
